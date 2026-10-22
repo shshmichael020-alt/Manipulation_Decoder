@@ -50,14 +50,9 @@ export function Navbar({
             <ShieldAlert className="w-5 h-5 text-primary animate-pulse" />
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="font-headline-sm text-sm sm:text-base tracking-wide text-on-surface font-bold uppercase">
-                The Manipulation <span className="text-primary">Decoder</span>
-              </span>
-              <span className="font-telemetry-pill text-[10px] px-1.5 py-0.5 rounded bg-surface-container-high text-primary border border-primary/30 uppercase font-mono">
-                v2.4-PROD (Hackathon Winner)
-              </span>
-            </div>
+            <span className="font-headline-sm text-sm sm:text-base tracking-wide text-on-surface font-bold uppercase">
+              The Manipulation <span className="text-primary">Decoder</span>
+            </span>
             <span className="font-telemetry-pill text-[10px] text-on-surface-variant/80 tracking-widest uppercase hidden sm:inline">
               Cognitive Security Workstation
             </span>
@@ -97,7 +92,7 @@ export function Navbar({
         </div>
       </div>
 
-      {/* Right Controls: Zero-Telemetry pill, Case History, SecOps Persona */}
+      {/* Right Controls: Zero-Telemetry pill, Case History */}
       <div className="flex items-center gap-2 sm:gap-3">
         <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-secondary/30 text-secondary">
           <Lock className="w-3.5 h-3.5 text-secondary" />
@@ -121,24 +116,6 @@ export function Navbar({
             </span>
           )}
         </button>
-
-        {/* Lead SecOps Badge */}
-        <div className="hidden lg:flex items-center gap-2 pl-2 border-l border-outline-variant/30">
-          <div className="w-7 h-7 rounded-full bg-surface-container-high border border-secondary/50 flex items-center justify-center text-secondary font-mono text-xs font-bold">
-            MV
-          </div>
-          <div className="flex flex-col text-left">
-            <span className="text-xs text-on-surface font-semibold leading-tight">
-              M. Vance (Lead SecOps)
-            </span>
-            <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              <span className="font-telemetry-pill text-[9px] text-secondary">
-                Air-Gapped Heuristics: Active
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </header>
   );

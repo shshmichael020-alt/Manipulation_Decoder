@@ -11,9 +11,6 @@ export function Footer() {
           <div className="flex items-center justify-center sm:justify-start gap-2 text-on-surface font-semibold mb-1">
             <ShieldCheck className="w-4 h-4 text-primary" />
             <span className="font-headline-sm uppercase tracking-wide">The Manipulation Decoder</span>
-            <span className="font-telemetry-pill text-[10px] text-primary px-1.5 py-0.5 rounded bg-surface-container-high font-mono">
-              v2.4-PROD
-            </span>
           </div>
           <p className="text-[11px] text-on-surface-variant/70">
             Decode the message. Detect the manipulation. Defend yourself.
