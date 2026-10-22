@@ -1,62 +1,80 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ShieldAlert,
-  Cpu,
-  Lock,
   GraduationCap,
-  Clock,
   Layers,
+  History,
+  Lock,
+  Search,
   Sparkles,
 } from "lucide-react";
+import { getSavedCases } from "@/lib/storage/case-history";
 
 interface NavbarProps {
   currentView: "studio" | "lab";
   onSelectView: (view: "studio" | "lab") => void;
   onOpenHistory: () => void;
+  caseCount?: number;
 }
 
 export function Navbar({
   currentView,
   onSelectView,
   onOpenHistory,
+  caseCount: propCaseCount,
 }: NavbarProps) {
+  const [storedCount, setStoredCount] = useState<number>(0);
+
+  useEffect(() => {
+    try {
+      const history = getSavedCases();
+      setStoredCount(history.length);
+    } catch {
+      // Ignore
+    }
+  }, []);
+
+  const count = propCaseCount !== undefined ? propCaseCount : storedCount;
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-background/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand identity */}
+    <header className="sticky top-0 z-50 h-16 w-full bg-surface-container-lowest/95 backdrop-blur-xl border-b border-outline-variant/30 flex items-center justify-between px-4 sm:px-6 shadow-[0_1px_12px_rgba(0,0,0,0.4)]">
+      {/* Brand & Identity */}
+      <div className="flex items-center gap-3">
         <div
           onClick={() => onSelectView("studio")}
-          className="flex items-center space-x-3 cursor-pointer"
+          className="flex items-center gap-3 cursor-pointer group"
         >
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-600/30 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
-            <ShieldAlert className="w-5 h-5 text-cyan-400 animate-pulse" />
+          <div className="w-9 h-9 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_12px_rgba(143,240,255,0.2)] group-hover:border-primary/60 transition-all">
+            <ShieldAlert className="w-5 h-5 text-primary animate-pulse" />
           </div>
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="font-bold text-lg text-slate-100 tracking-tight">
-                The Manipulation <span className="text-cyan-400">Decoder</span>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="font-headline-sm text-sm sm:text-base tracking-wide text-on-surface font-bold uppercase">
+                The Manipulation <span className="text-primary">Decoder</span>
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 uppercase tracking-wider">
-                v2.0
+              <span className="font-telemetry-pill text-[10px] px-1.5 py-0.5 rounded bg-surface-container-high text-primary border border-primary/30 uppercase font-mono">
+                v2.4-PROD (Hackathon Winner)
               </span>
             </div>
-            <p className="text-xs text-slate-400 hidden sm:block">
-              Decode the message. Detect the manipulation. Defend yourself.
-            </p>
+            <span className="font-telemetry-pill text-[10px] text-on-surface-variant/80 tracking-widest uppercase hidden sm:inline">
+              Cognitive Security Workstation
+            </span>
           </div>
         </div>
+      </div>
 
-        {/* View Switcher: Studio vs Training Lab */}
-        <div className="flex items-center space-x-1 p-1 rounded-lg bg-slate-900 border border-slate-800">
+      {/* View Switcher: Studio vs Training Lab */}
+      <div className="flex items-center gap-2">
+        <div className="bg-surface-container-low p-1 rounded-lg border border-outline-variant/40 flex items-center gap-1">
           <button
             type="button"
             onClick={() => onSelectView("studio")}
-            className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center space-x-1.5 transition-all ${
+            className={`px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-all ${
               currentView === "studio"
-                ? "bg-cyan-500 text-white shadow-[0_0_12px_rgba(6,182,212,0.3)]"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-primary text-on-primary font-bold shadow-[0_0_12px_rgba(143,240,255,0.35)]"
+                : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -66,33 +84,59 @@ export function Navbar({
           <button
             type="button"
             onClick={() => onSelectView("lab")}
-            className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center space-x-1.5 transition-all ${
+            className={`px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-all ${
               currentView === "lab"
-                ? "bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.3)]"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-tertiary-container text-on-tertiary font-bold shadow-[0_0_12px_rgba(244,187,100,0.35)]"
+                : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
             }`}
           >
             <GraduationCap className="w-3.5 h-3.5" />
             <span>Training Lab</span>
+            <span className="text-[10px] px-1 rounded bg-surface-container-high text-on-surface font-mono">6</span>
           </button>
         </div>
+      </div>
 
-        {/* Actions & Status */}
-        <div className="flex items-center space-x-2.5">
-          <button
-            type="button"
-            onClick={onOpenHistory}
-            className="px-2.5 py-1.5 rounded-lg bg-surface border border-slate-700 hover:border-cyan-500/40 text-xs text-slate-300 hover:text-white flex items-center space-x-1.5 transition-colors"
-            title="Open local browser case history"
-          >
-            <Clock className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">History</span>
-          </button>
+      {/* Right Controls: Zero-Telemetry pill, Case History, SecOps Persona */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-secondary/30 text-secondary">
+          <Lock className="w-3.5 h-3.5 text-secondary" />
+          <span className="font-telemetry-pill text-[10px] uppercase tracking-wider font-semibold">
+            Zero-Telemetry Engine
+          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+        </div>
 
-          <div className="hidden lg:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300 font-mono">
-            <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Local Engine Active</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        {/* History Drawer Trigger */}
+        <button
+          type="button"
+          onClick={onOpenHistory}
+          className="relative p-2 rounded-lg bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:text-on-surface hover:border-primary/40 transition-colors"
+          title="Case History (Stored locally in browser)"
+        >
+          <History className="w-4 h-4" />
+          {count > 0 && (
+            <span className="absolute -top-1 -right-1 font-telemetry-pill text-[9px] bg-primary text-on-primary px-1.5 rounded-full font-bold leading-none py-0.5 shadow-sm">
+              {count}
+            </span>
+          )}
+        </button>
+
+        {/* Lead SecOps Badge */}
+        <div className="hidden lg:flex items-center gap-2 pl-2 border-l border-outline-variant/30">
+          <div className="w-7 h-7 rounded-full bg-surface-container-high border border-secondary/50 flex items-center justify-center text-secondary font-mono text-xs font-bold">
+            MV
+          </div>
+          <div className="flex flex-col text-left">
+            <span className="text-xs text-on-surface font-semibold leading-tight">
+              M. Vance (Lead SecOps)
+            </span>
+            <div className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+              <span className="font-telemetry-pill text-[9px] text-secondary">
+                Air-Gapped Heuristics: Active
+              </span>
+            </div>
           </div>
         </div>
       </div>

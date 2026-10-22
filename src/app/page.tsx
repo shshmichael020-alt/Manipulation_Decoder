@@ -123,7 +123,7 @@ export default function Home() {
 
             {/* Dual-Perspective Security Report View (Protection & Analyst Modes) */}
             {report && (
-              <div ref={reportRef} className="scroll-mt-20">
+              <div ref={reportRef} className="scroll-mt-20 mt-10">
                 <AnalysisReportView report={report} onReset={handleReset} />
               </div>
             )}

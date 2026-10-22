@@ -39,6 +39,8 @@ export function getSavedCases(): SavedCaseSummary[] {
   }
 }
 
+export const getCaseHistory = getSavedCases;
+
 export function saveCaseToHistory(caseItem: SavedCaseSummary): void {
   if (typeof window === "undefined") return;
   if (!getHistoryOptIn()) return;
